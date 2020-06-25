@@ -11,9 +11,11 @@ object HelloKafkaStreams extends App {
 
 class HelloKafkaStreams extends KafkaStreamsApp {
   def createTopology(builder: StreamsBuilder): Topology = {
-    builder.stream[String, String]("transaction")
-      .mapValues(name => s"Pattern, $name!")
-      .to("Pattern")
+    val bs = builder.stream[String, String]("transaction")
+
+    bs.mapValues(name => s"Pattern, $name!").to("Pattern")
+    bs.mapValues(name => s"Rewards, $name!").to("Rewards")
+    bs.mapValues(name => s"Storage, $name!").to("Storage")
 
     builder.build()
   }
