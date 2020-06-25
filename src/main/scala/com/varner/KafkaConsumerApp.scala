@@ -52,7 +52,7 @@ class ScalaConsumerExample(val brokers: String,
 }
 
 object KafkaConsumerApp extends App {
-  val example = new ScalaConsumerExample("localhost:29092", "group1", "transaction")
+  val example = new ScalaConsumerExample("localhost:29092", "group1", "Pattern")
   example.run()
 }
 
