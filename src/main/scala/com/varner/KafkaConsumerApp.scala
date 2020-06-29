@@ -6,7 +6,7 @@ import java.util.{Collections, Properties}
 
 import org.apache.kafka.clients.consumer.{ConsumerConfig, KafkaConsumer}
 
-import scala.collection.JavaConversions._
+import scala.collection.JavaConverters._
 
 class ScalaConsumerExample(val brokers: String,
                            val groupId: String,
@@ -43,8 +43,9 @@ class ScalaConsumerExample(val brokers: String,
         while (true) {
           //val records = consumer.poll(1000)
           val records = consumer.poll(Duration.ofSeconds(1))
+          //records.map(record => println("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset()))
 
-          for (record <- records) {
+          for (record <- records.asScala) {
             System.out.println("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset())
           }
         }
