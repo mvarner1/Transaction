@@ -1,29 +1,12 @@
 .gradle
+gradle-app.setting
+!gradle-wrapper.jar
+.gradletasknamecache
 
 build
+.idea
 
-
-
-# Gradle
-.gradle
-
-# Created by https://www.gitignore.io/api/java,gradle
-
-### Java ###
 *.class
 
 
-### Gradle ###
-.gradle
 
-
-# Ignore Gradle GUI config
-gradle-app.setting
-
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
-
-# Cache of project
-.gradletasknamecache
-
-/.idea/
