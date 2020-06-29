@@ -5,7 +5,3 @@ object AppConstant {
   val TOPIC_REWARDS = "rewards"
 }
 
-object Task {
-  val EmptyID = 0
-  val EmptyDescription = "No Description"
-}
