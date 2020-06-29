@@ -2,3 +2,6 @@
 *.log
 .gradle/*
 build/*
+/.gradle/
+/.idea/
+/build/
