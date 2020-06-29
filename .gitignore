@@ -1,7 +1,3 @@
-*.class
-*.log
-.gradle/*
-build/*
-/.gradle/
-/.idea/
+.gradle
 /build/
+.idea

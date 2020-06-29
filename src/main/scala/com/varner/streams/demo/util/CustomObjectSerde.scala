@@ -14,41 +14,35 @@ import com.fasterxml.jackson.databind.exc.{UnrecognizedPropertyException => UPE}
 
 
 class CustomObjectSerde[T >: Null <: Any : Manifest] extends Serde[T] {
-  override def deserializer(): Deserializer[T] = new CustomObjectDeserializer[T]
 
   override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
-
   override def close(): Unit = ()
+
+  override def deserializer(): Deserializer[T] = new CustomObjectDeserializer[T]
 
   override def serializer(): Serializer[T] = new CustomObjectSerializer[T]
 }
 
 class CustomObjectSerializer[T >: Null <: Any : Manifest] extends Serializer[T] {
+
   override def configure(configs: java.util.Map[String, _], isKey: Boolean): Unit = ()
-  private val mapper = new ObjectMapper
-  mapper.registerModule(DefaultScalaModule)
-  mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
+  override def close(): Unit = ()
 
   override def serialize(topic: String, data: T): Array[Byte] = {
     CustomObjectSerdeHelper.ByteArray.encode(data)
   }
 
-  override def close(): Unit = ()
+
 }
 
 class CustomObjectDeserializer[T >: Null <: Any : Manifest] extends Deserializer[T]  {
-  private val mapper = new ObjectMapper
-  mapper.registerModule(DefaultScalaModule)
-  mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
   override def configure(configs: java.util.Map[String, _], isKey: Boolean): Unit = ()
-
   override def close(): Unit = ()
 
   override def deserialize(topic: String, data: Array[Byte]): T = {
     CustomObjectSerdeHelper.ByteArray.decode(data)
   }
-
 }
 
 

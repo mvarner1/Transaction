@@ -1,5 +1,6 @@
 package com.varner
 
+import java.time.Duration
 import java.util.concurrent._
 import java.util.{Collections, Properties}
 
@@ -40,7 +41,8 @@ class ScalaConsumerExample(val brokers: String,
     Executors.newSingleThreadExecutor.execute(    new Runnable {
       override def run(): Unit = {
         while (true) {
-          val records = consumer.poll(1000)
+          //val records = consumer.poll(1000)
+          val records = consumer.poll(Duration.ofSeconds(1))
 
           for (record <- records) {
             System.out.println("Received message: (" + record.key() + ", " + record.value() + ") at offset " + record.offset())

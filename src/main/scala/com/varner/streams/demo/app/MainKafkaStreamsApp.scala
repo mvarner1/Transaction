@@ -23,7 +23,7 @@ class MainKafkaStreamsApp extends BaseKafkaStreamsApp {
   def createTopology(builder: StreamsBuilder): Topology = {
 
     implicit val purchaseSerde = new CustomObjectSerde[Purchase]
-    implicit val ratingSerde = new CustomObjectSerde[Reward]
+    implicit val rewardSerde = new CustomObjectSerde[Reward]
 
     val sourceTopic:String = AppConstant.TOPIC_TRANSACTION
     val rewardsTopic:String = AppConstant.TOPIC_REWARDS
