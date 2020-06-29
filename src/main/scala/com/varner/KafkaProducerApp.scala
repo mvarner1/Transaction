@@ -2,6 +2,7 @@ package com.varner
 
 import java.util.Properties
 
+import com.varner.streams.demo.AppConstant
 import org.apache.kafka.clients.producer.{KafkaProducer, ProducerRecord}
 
 case class Transaction(
@@ -25,7 +26,7 @@ object KafkaProducerApp extends App {
   props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer")
   props.put("acks","all")
   val producer = new KafkaProducer[String, String](props)
-  val topic = "transaction"
+  val topic = AppConstant.TOPIC_TRANSACTION
   var index = 0
   try {
     while(true) {

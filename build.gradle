@@ -9,13 +9,22 @@ repositories {
 }
 
 dependencies {
-    compile 'org.apache.kafka:kafka-streams:2.0.0'
-    compile 'org.apache.kafka:kafka-streams-scala_2.12:2.0.0'
-    compile 'org.scala-lang:scala-library:2.12.6'
-    compile 'org.apache.kafka:kafka-clients:2.1.0'
+//    compile 'org.apache.kafka:kafka-streams:2.0.0'
+//    compile 'org.apache.kafka:kafka-streams-scala_2.12:2.0.0'
+//    compile 'org.scala-lang:scala-library:2.12.6'
+//    compile 'org.apache.kafka:kafka-clients:2.1.0'
+
+    compile 'org.apache.kafka:kafka-streams:2.3.0'
+    compile 'org.apache.kafka:kafka-streams-scala_2.12:2.3.0'
+    compile 'org.scala-lang:scala-library:2.12.11'
+    compile 'org.apache.kafka:kafka-clients:2.3.0'
+    compile 'com.fasterxml.jackson.module:jackson-module-scala_2.12:2.9.5'
+    compile 'com.typesafe:config:1.4.0'
+    compile 'com.github.javafaker:javafaker:0.12'
 
     testCompile 'org.scalatest:scalatest_2.12:3.0.5'
     testCompile 'com.madewithtea:mockedstreams_2.12:2.0.0'
+    testCompile 'org.apache.kafka:kafka-streams-test-utils:2.2.2'
     testRuntime 'org.pegdown:pegdown:1.4.2' // required by gradle-scalatest
 }
 
