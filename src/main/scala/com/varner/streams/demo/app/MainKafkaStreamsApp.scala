@@ -4,15 +4,13 @@ package kafkastreams.demo
 
 import com.github.javafaker.Faker
 import com.varner.streams.demo.AppConstant
-import com.varner.streams.demo.app.data.generator.KafkaPurchaseProducerApp.faker
 import com.varner.streams.demo.model.{Purchase, Reward}
 import com.varner.streams.demo.util.CustomObjectSerde
 import org.apache.kafka.streams.Topology
 import org.apache.kafka.streams.kstream.Printed
 import org.apache.kafka.streams.scala.ImplicitConversions._
 import org.apache.kafka.streams.scala.Serdes.String
-import org.apache.kafka.streams.scala.kstream.Consumed
-import org.apache.kafka.streams.scala.{Serdes, StreamsBuilder}
+import org.apache.kafka.streams.scala.{StreamsBuilder}
 
 object MainKafkaStreamsApp extends App {
   new MainKafkaStreamsApp().start("main-kafka-streams-app")
