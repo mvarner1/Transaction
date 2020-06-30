@@ -1,8 +1,5 @@
 package com.varner.streams.demo.app
 
-package kafkastreams.demo
-
-import com.github.javafaker.Faker
 import com.varner.streams.demo.AppConstant
 import com.varner.streams.demo.builder.{PurchaseBuilder, PurchasePatternBuilder, RewardBuilder}
 import com.varner.streams.demo.model.{Purchase, PurchasePattern, Reward}
