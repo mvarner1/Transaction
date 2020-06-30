@@ -62,7 +62,7 @@ object KafkaPurchaseProducerApp extends App {
   val producer = new KafkaProducer[String, String](properties)
   val topic = AppConstant.TOPIC_TRANSACTION
   var index = 0
-  val noOfRecords = 1
+  val noOfRecords = 100
   try {
     for (index <- 0 until noOfRecords) {
 
