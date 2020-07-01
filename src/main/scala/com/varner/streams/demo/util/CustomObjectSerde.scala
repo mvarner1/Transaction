@@ -11,15 +11,11 @@ import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 import com.fasterxml.jackson.databind.exc.{UnrecognizedPropertyException => UPE}
 
-
-
 class CustomObjectSerde[T >: Null <: Any : Manifest] extends Serde[T] {
 
   override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
   override def close(): Unit = ()
-
   override def deserializer(): Deserializer[T] = new CustomObjectDeserializer[T]
-
   override def serializer(): Serializer[T] = new CustomObjectSerializer[T]
 }
 
@@ -27,14 +23,10 @@ class CustomObjectSerializer[T >: Null <: Any : Manifest] extends Serializer[T] 
 
   override def configure(configs: java.util.Map[String, _], isKey: Boolean): Unit = ()
   override def close(): Unit = ()
-
   override def serialize(topic: String, data: T): Array[Byte] = {
     CustomObjectSerdeHelper.ByteArray.encode(data)
   }
-
-
 }
-
 class CustomObjectDeserializer[T >: Null <: Any : Manifest] extends Deserializer[T]  {
 
   override def configure(configs: java.util.Map[String, _], isKey: Boolean): Unit = ()
@@ -44,7 +36,6 @@ class CustomObjectDeserializer[T >: Null <: Any : Manifest] extends Deserializer
     CustomObjectSerdeHelper.ByteArray.decode(data)
   }
 }
-
 
 object CustomObjectSerdeHelper {
 
