@@ -1,8 +1,7 @@
 package com.varner.streams.demo.util
 
-import java.lang.reflect.{ParameterizedType, Type}
-import java.util
 
+import java.util
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.core.`type`.TypeReference
@@ -10,8 +9,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.kafka.common.serialization.{Deserializer, Serde, Serializer}
 import com.fasterxml.jackson.databind.exc.{UnrecognizedPropertyException => UPE}
+import scala.reflect.ClassTag
 
-class CustomObjectSerde[T >: Null <: Any : Manifest] extends Serde[T] {
+class CustomObjectSerde[T >: Null : ClassTag] extends Serde[T] {
 
   override def configure(configs: util.Map[String, _], isKey: Boolean): Unit = ()
   override def close(): Unit = ()
@@ -19,7 +19,7 @@ class CustomObjectSerde[T >: Null <: Any : Manifest] extends Serde[T] {
   override def serializer(): Serializer[T] = new CustomObjectSerializer[T]
 }
 
-class CustomObjectSerializer[T >: Null <: Any : Manifest] extends Serializer[T] {
+class CustomObjectSerializer[T >: Null : ClassTag] extends Serializer[T] {
 
   override def configure(configs: java.util.Map[String, _], isKey: Boolean): Unit = ()
   override def close(): Unit = ()
@@ -27,13 +27,13 @@ class CustomObjectSerializer[T >: Null <: Any : Manifest] extends Serializer[T] 
     CustomObjectSerdeHelper.ByteArray.encode(data)
   }
 }
-class CustomObjectDeserializer[T >: Null <: Any : Manifest] extends Deserializer[T]  {
-
+class CustomObjectDeserializer[T >: Null : ClassTag] extends Deserializer[T]  {
+  val mapper = new ObjectMapper
+  mapper.registerModule(DefaultScalaModule)
   override def configure(configs: java.util.Map[String, _], isKey: Boolean): Unit = ()
   override def close(): Unit = ()
-
-  override def deserialize(topic: String, data: Array[Byte]): T = {
-    CustomObjectSerdeHelper.ByteArray.decode(data)
+  override def deserialize(topic: String, data: Array[Byte]): T ={
+    CustomObjectSerdeHelper.ByteArray.decode[T](data)
   }
 }
 
@@ -47,28 +47,22 @@ object CustomObjectSerdeHelper {
   mapper.registerModule(DefaultScalaModule)
   mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
 
-  private def typeReference[T: Manifest] = new TypeReference[T] {
-    override def getType = typeFromManifest(manifest[T])
-  }
-
-  private def typeFromManifest(m: Manifest[_]): Type = {
-    if (m.typeArguments.isEmpty) {
-      m.runtimeClass
-    }
-    else new ParameterizedType {
-      def getRawType = m.runtimeClass
-
-      def getActualTypeArguments = m.typeArguments.map(typeFromManifest).toArray
-
-      def getOwnerType = null
-    }
-  }
-
   object ByteArray {
     def encode(value: Any): Array[Byte] = mapper.writeValueAsBytes(value)
 
-    def decode[T: Manifest](value: Array[Byte]): T =
-      mapper.readValue(value, typeReference[T])
-  }
+    def decode[T >: Null : ClassTag](data: Array[Byte]): T =  data match {
+      case null => null
+      case _ =>
+        try {
+          mapper.readValue(data, scala.reflect.classTag[T].runtimeClass.asInstanceOf[Class[T]])
+        } catch {
+          case e: Exception =>
+            val jsonStr = new String(data, "UTF-8")
+            println("Error occurred while decoding JSON: "+ jsonStr + "Error: " , e)
+            null
+        }
 
+    }
+
+  }
 }
